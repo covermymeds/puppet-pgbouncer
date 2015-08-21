@@ -35,19 +35,26 @@ The primary class that installs and configures pgbouncer.  It also ensures the p
 
 #####`databases`
 An array of entries to be written to the databases section in the pbbouncer.ini
+
 Array entry format in hieradata:
-```pgbouncer::params::databases:
-  - 'postgres = host=localhost    dbname=postgres'
-  - 'admin    = host=localhost    dbname=admin'```
+
+```
+  pgbouncer::params::databases:
+    - 'postgres = host=localhost    dbname=postgres'
+    - 'admin    = host=localhost    dbname=admin'
+```
 
 #####`auth_list`
 An array of auth values (user/password pairs).
 This array is written to /var/lib/postgresql/pgbouncer.auth line by line.
 
-Array entry format in hieradata: 
-```pgbouncer::params::auth_list:
-  - '"user" "password"'
-  - '"user2" "password2"'```
+Array entry format in hieradata:
+
+```
+  pgbouncer::params::auth_list:
+    - '"user" "password"'
+    - '"user2" "password2"'
+```
 
 ####`pgbouncer_package_name`
 Name of the package to install.  This should default to your distributions package automatically, but could be used to specify a specific version.
