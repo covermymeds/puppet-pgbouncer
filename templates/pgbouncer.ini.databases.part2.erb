@@ -1,0 +1,6 @@
+; Created from: <%= @name %>
+<% if @databases -%>
+<%  @databases.each do |entry| -%>
+<%=   %Q|#{entry['source_db']} = host=#{entry['host']}  dbname=#{entry['dest_db']} auth_user=#{entry['auth_user']}| %>
+<%  end -%>
+<% end %>
