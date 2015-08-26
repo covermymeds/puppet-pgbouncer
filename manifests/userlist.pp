@@ -4,10 +4,8 @@ define pgbouncer::userlist (
 
   validate_array($auth_list)
 
-  #notify{"The defined type value is: ${userlist_file}": }
-  
   concat::fragment { "$auth_list[0]['user']":
-    target  => '/etc/pgbouncer/userlist.txt',
+    target  => $::pgbouncer::userlist_file,
     content => template('pgbouncer/userlist.txt.erb'),
     order   => '01',
   }
