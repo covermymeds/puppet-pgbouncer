@@ -48,7 +48,7 @@ Array entry format in hieradata:
 
 #####`auth_list`
 An array of hash values (user/password pairs).
-This array is written to /var/lib/postgresql/pgbouncer.aut
+This array is written to /var/lib/postgresql/pgbouncer.auth
 
 Array entry format in hieradata:
 
