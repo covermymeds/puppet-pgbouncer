@@ -39,9 +39,11 @@ An array of entries to be written to the databases section in the pbbouncer.ini
 Array entry format in hieradata:
 
 ```
-  pgbouncer::params::databases:
-    - 'postgres = host=localhost    dbname=postgres'
-    - 'admin    = host=localhost    dbname=admin'
+  pgbouncer::databases:
+    - source_db: 'admin'
+      host: 'localhost'
+      dest_db: 'admin'
+      auth_user: 'admin'
 ```
 
 #####`auth_list`
@@ -51,13 +53,10 @@ This array is written to /var/lib/postgresql/pgbouncer.auth line by line.
 Array entry format in hieradata:
 
 ```
-  pgbouncer::params::auth_list:
-    - '"user" "password"'
-    - '"user2" "password2"'
+  pgbouncer::userlist:
+    - user: 'admin'
+      password: 'admin'
 ```
-
-####`pgbouncer_package_name`
-Name of the package to install.  This should default to your distributions package automatically, but could be used to specify a specific version.
 
 ## Limitations
 
