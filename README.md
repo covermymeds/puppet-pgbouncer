@@ -34,7 +34,7 @@ The primary class that installs and configures pgbouncer.  It also ensures the p
 **Parameters within `pgbouncer`:**
 
 #####`databases`
-An array of entries to be written to the databases section in the pbbouncer.ini
+An array of hash entries to be written to the databases section in the pbbouncer.ini
 
 Array entry format in hieradata:
 
@@ -47,8 +47,8 @@ Array entry format in hieradata:
 ```
 
 #####`auth_list`
-An array of auth values (user/password pairs).
-This array is written to /var/lib/postgresql/pgbouncer.auth line by line.
+An array of hash values (user/password pairs).
+This array is written to /var/lib/postgresql/pgbouncer.aut
 
 Array entry format in hieradata:
 
