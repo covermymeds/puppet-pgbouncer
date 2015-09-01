@@ -1,3 +1,10 @@
+## 2015-09-01 Release 0.2.1
+### Summary
+Bug-fix release
+
+### Changes
+ - Made entries into the userlist.txt file have the md5sum value of 'md5[password][username]' per the documentation
+
 ## 2015-08-26 Release 0.2.0
 ### Summary
 Re-built module loosely based on https://bitbucket.org/landcareresearch/puppet-pgbouncer
