@@ -1,6 +1,7 @@
 ; Created from: <%= @name %>
 <% if @auth_list -%>
 <%  @auth_list.each do |entry| -%>
-<%=   %Q|"#{entry['user']}" "#{entry['password']}"| %>
+<%  passhash = Digest::MD5.hexdigest( "#{entry['password']}#{entry['user']}" )-%>
+<%=   %Q|"#{entry['user']}" "md5#{passhash}"| %>
 <%  end -%>
 <% end %>
