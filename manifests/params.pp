@@ -13,7 +13,7 @@ class pgbouncer::params {
   # === Set OS specific variables (can be overridden by setting config_params) === #
   case $::osfamily {
     'RedHat', 'Linux': {
-      $logfile                 = '/var/log/pgbouncer.log'
+      $logfile                 = '/var/log/pgbouncer/pgbouncer.log'
       $pidfile                 = '/var/run/pgbouncer/pgbouncer.pid'
       $confdir                 = '/etc/pgbouncer'
       $conffile                = "$confdir/pgbouncer.ini"

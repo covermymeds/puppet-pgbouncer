@@ -4,6 +4,7 @@ Bug-fix release
 
 ### Changes
  - Removed a comment line from userlist
+ - Changed default storage location of pgbouncer log on rhel
 
 ## 2015-09-01 Release 0.2.1
 ### Summary
