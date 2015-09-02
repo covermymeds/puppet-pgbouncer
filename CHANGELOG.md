@@ -1,3 +1,10 @@
+## 2015-09-02 Release 0.2.2
+### Summary
+Bug-fix release
+
+### Changes
+ - Removed a comment line from userlist
+
 ## 2015-09-01 Release 0.2.1
 ### Summary
 Bug-fix release
