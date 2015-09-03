@@ -1,3 +1,10 @@
+## 2015-09-03 Release 0.2.3
+### Summary
+Bug-fix release
+
+### Changes
+ - Changed params on database list
+
 ## 2015-09-02 Release 0.2.2
 ### Summary
 Bug-fix release
