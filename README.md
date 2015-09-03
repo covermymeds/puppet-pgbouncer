@@ -60,7 +60,7 @@ Array entry format in hieradata:
 
 ## Limitations
 
-This has only been tested on Redhat Systems. If you expereience issues using it with Ubuntu, please open an issue and we will work with you to correct the problem.
+This has only been tested on Redhat Systems. If you experience issues using it with Ubuntu, please open an issue and we will work with you to correct the problem or you can submit a PR.
 
 ## Development
 
