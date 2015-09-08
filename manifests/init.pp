@@ -20,7 +20,8 @@
 #
 # === Credits
 #
-# This module is loosely based on https://bitbucket.org/landcareresearch/puppet-pgbouncer
+# This module is loosely based on 
+# https://bitbucket.org/landcareresearch/puppet-pgbouncer
 #
 # === Copyright
 #
@@ -32,17 +33,18 @@
 #
 # === Parameters 
 # 
-# userlist is an empty array by default. You can create an array in hieradata like the  
-# example below or you can call the resource directly from a third party module 
+# userlist is an empty array by default. You can create an array in hieradata 
+# like the example below or you can call the resource directly from a third 
+# party module 
 # pgbouncer::userlist: 
 #   - user: <user>
 #     password: <password> 
 #   - user: <user2>
 #     password: <password2> 
 # 
-# databases is an empty array by default. You can create an array in hieradata like the 
-# example below or you can call the resource direclty from a third party module 
-# Set hieradata hash array for "pgbouncer::databases" to set values
+# databases is an empty array by default. You can create an array in hieradata
+# like the example below or you can call the resource direclty from a third
+# party module Set hieradata hash array for "pgbouncer::databases" to set values
 # Example:
 # pgbouncer::databases
 #   - source_db: postgres
@@ -50,19 +52,20 @@
 #     dest_db: postgres
 #     auth_user: postgres
 # 
-# dbtmpfile is the temporary file the module uses to stitch together pieces using puppet
-# concat.  It's located in the tmp directory by default
+# dbtmpfile is the temporary file the module uses to stitch together pieces
+# using puppet concat.  It's located in the tmp directory by default
 #
-# paramtmpfile is the temporary file the module uses to stitch together pieces using
-# puppet concat. Its located in the tmp directory by default.
+# paramtmpfile is the temporary file the module uses to stitch together pieces
+# using puppet concat. Its located in the tmp directory by default.
 #
-# default_config_params is a hash of the necessary params needed to start pgbouncer. If 
-# you choose to override this, you must specify all of the default params and not just
-# the one you want to override.
+# default_config_params is a hash of the necessary params needed to start
+# pgbouncer. If you choose to override this, you must specify all of the default
+# params and not just the one you want to override.
 #
-# config_params is a hash that gets merged with the default params. If you want to override
-# a single value, this would be the variable to do it in. All of the available params found
-# in the below link can be added to the config from this hash.
+# config_params is a hash that gets merged with the default params. If you want
+# to override a single value, this would be the variable to do it in. All of the
+# available params found in the below link can be added to the config from this
+# hash.
 # Link to pgbouncer doc: http://pgbouncer.projects.pgfoundry.org/doc/config.html
 # Example:
 # pgbouncer::config_params:
@@ -70,9 +73,9 @@
 #   dns_max_ttl: 16
 #
 # pgbouncer_package_name is the name of the package that should be installed. By
-# default, this should be picked by the OS, but you can specify a name here if you'd like
-# to override the package name. You could possibly use this to specify an older version
-# as well.
+# default, this should be picked by the OS, but you can specify a name here if 
+# you'd like to override the package name. You could possibly use this to 
+# specify an older version as well.
 #
 #
 class pgbouncer (
@@ -93,22 +96,26 @@ class pgbouncer (
   # Same package name for both redhat based and debian based
   package{ $pgbouncer_package_name:
     ensure  => installed,
-    require => [ Class['postgresql::repo::yum_postgresql_org'], Anchor['pgbouncer::begin'] ],
+    require => [
+      Class[
+        'postgresql::repo::yum_postgresql_org'],
+        Anchor['pgbouncer::begin']
+      ],
   }
 
   # verify we have config file managed by concat
-  concat { "$conffile":
+  concat { $::pgbouncer::conffile:
     ensure => present,
   }
 
   # verify we have auth_file managed by concat
-  concat { "$userlist_file":
+  concat { $::pgbouncer::userlist_file:
     ensure => present,
   }
- 
+  
   # build the pgbouncer parameter piece of the config file
-  concat::fragment { "$paramtmpfile":
-    target  => "$conffile",
+  concat::fragment { $paramtmpfile:
+    target  => $::pgbouncer::conffile,
     content => template('pgbouncer/pgbouncer.ini.param.part.erb'),
     order   => '03',
     require => Package[$pgbouncer_package_name],
@@ -116,14 +123,13 @@ class pgbouncer (
 
   # check if debian
   if $::osfamily == 'Debian' {
-    file{ "$deb_default_file":
+    file{ $::pgbouncer::deb_default_file:
       ensure  => file,
       source  => 'puppet:///modules/pgbouncer/pgbouncer',
-      require => Package[$_pgbouncer_package_name],
-      before  => File["$userlist_file"],
+      require => Package[$pgbouncer_package_name],
+      before  => File[$::pgbouncer::userlist_file],
     }
   }
- 
   # check if we have an authlist 
   if $userlist {
     pgbouncer::userlist{ 'pgbouncer_module_userlist':
@@ -132,8 +138,8 @@ class pgbouncer (
   }
 
   #build the databases base piece of the config file
-  concat::fragment { "$dbtmpfile":
-    target  => "$conffile",
+  concat::fragment { $::pgbouncer::dbtmpfile:
+    target  => $::pgbouncer::conffile,
     content => template('pgbouncer/pgbouncer.ini.databases.part1.erb'),
     order   => '01',
   }
@@ -142,12 +148,12 @@ class pgbouncer (
   if $databases {
     pgbouncer::databases{ 'pgbouncer_module_databases':
       databases => $databases,
-    }    
+    }
   }
 
   service {'pgbouncer':
     ensure    => running,
-    subscribe => File["$userlist_file", "$conffile"],
+    subscribe => File[$::pgbouncer::userlist_file, $::pgbouncer::conffile],
   }
   
   anchor{'pgbouncer::end':
