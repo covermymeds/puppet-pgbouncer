@@ -77,6 +77,9 @@
 # you'd like to override the package name. You could possibly use this to 
 # specify an older version as well.
 #
+# conffile is the name of the configuration file
+#
+# userlist_file is the name of the auth_file where the userlist is stored
 #
 class pgbouncer (
   $userlist                   = $pgbouncer::params::userlist,
@@ -86,6 +89,8 @@ class pgbouncer (
   $default_config_params      = $pgbouncer::params::default_config_params,
   $config_params              = $pgbouncer::params::config_params,
   $pgbouncer_package_name     = $pgbouncer::params::pgbouncer_package_name,
+  $conffile                   = $pgbouncer::params::conffile,
+  $userlist_file              = $pgbouncer::params::userlist_file,
 ) inherits pgbouncer::params {
 
   # merge the defaults and custom params
@@ -104,18 +109,18 @@ class pgbouncer (
   }
 
   # verify we have config file managed by concat
-  concat { $::pgbouncer::conffile:
+  concat { $conffile:
     ensure => present,
   }
 
   # verify we have auth_file managed by concat
-  concat { $::pgbouncer::userlist_file:
+  concat { $userlist_file:
     ensure => present,
   }
   
   # build the pgbouncer parameter piece of the config file
   concat::fragment { $paramtmpfile:
-    target  => $::pgbouncer::conffile,
+    target  => $conffile,
     content => template('pgbouncer/pgbouncer.ini.param.part.erb'),
     order   => '03',
     require => Package[$pgbouncer_package_name],
@@ -127,7 +132,7 @@ class pgbouncer (
       ensure  => file,
       source  => 'puppet:///modules/pgbouncer/pgbouncer',
       require => Package[$pgbouncer_package_name],
-      before  => File[$::pgbouncer::userlist_file],
+      before  => File[$userlist_file],
     }
   }
   # check if we have an authlist 
@@ -139,7 +144,7 @@ class pgbouncer (
 
   #build the databases base piece of the config file
   concat::fragment { $::pgbouncer::dbtmpfile:
-    target  => $::pgbouncer::conffile,
+    target  => $conffile,
     content => template('pgbouncer/pgbouncer.ini.databases.part1.erb'),
     order   => '01',
   }
@@ -153,7 +158,7 @@ class pgbouncer (
 
   service {'pgbouncer':
     ensure    => running,
-    subscribe => File[$::pgbouncer::userlist_file, $::pgbouncer::conffile],
+    subscribe => File[$userlist_file, $conffile],
   }
   
   anchor{'pgbouncer::end':
