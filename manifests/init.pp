@@ -81,6 +81,8 @@
 #
 # userlist_file is the name of the auth_file where the userlist is stored
 #
+# deb_default_file is a file specific to ubuntu that loads a startup file
+#
 class pgbouncer (
   $userlist                   = $pgbouncer::params::userlist,
   $databases                  = $pgbouncer::params::databases,
@@ -91,6 +93,7 @@ class pgbouncer (
   $pgbouncer_package_name     = $pgbouncer::params::pgbouncer_package_name,
   $conffile                   = $pgbouncer::params::conffile,
   $userlist_file              = $pgbouncer::params::userlist_file,
+  $deb_default_file           = $pgbouncer::params::deb_default_file,
 ) inherits pgbouncer::params {
 
   # merge the defaults and custom params
@@ -128,7 +131,7 @@ class pgbouncer (
 
   # check if debian
   if $::osfamily == 'Debian' {
-    file{ $::pgbouncer::deb_default_file:
+    file{ $deb_default_file:
       ensure  => file,
       source  => 'puppet:///modules/pgbouncer/pgbouncer',
       require => Package[$pgbouncer_package_name],
