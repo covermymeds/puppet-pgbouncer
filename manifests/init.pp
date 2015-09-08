@@ -146,7 +146,7 @@ class pgbouncer (
   }
 
   #build the databases base piece of the config file
-  concat::fragment { $::pgbouncer::dbtmpfile:
+  concat::fragment { $dbtmpfile:
     target  => $conffile,
     content => template('pgbouncer/pgbouncer.ini.databases.part1.erb'),
     order   => '01',
