@@ -1,3 +1,10 @@
+## 2015-09-010 Release 0.2.6
+### Summary
+Issue with a puppet lint error on forge
+
+### Changes
+ - Removed space from defined type to see if that fixes error that puppet-lint is not showing locally
+
 ## 2015-09-08 Release 0.2.5
 ### Summary
 License change and bug-fix

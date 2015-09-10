@@ -2,7 +2,7 @@
 #
 # defined type that can be used to create the userlist in the auth_file
 #
-define pgbouncer::userlist (
+define pgbouncer::userlist(
   $auth_list = [],
 ) {
 
