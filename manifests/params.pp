@@ -9,32 +9,31 @@ class pgbouncer::params {
   $dbtmpfile                  = '/tmp/pgbouncer-dbtmpfile'
   $paramtmpfile               = '/tmp/pgbouncer-paramtmpfile'
   $config_params              = undef
- 
-  # === Set OS specific variables (can be overridden by setting config_params) === #
+  $pgbouncer_package_name     = 'pgbouncer'
+
+  # === Set OS specific variables === #
   case $::osfamily {
     'RedHat', 'Linux': {
       $logfile                 = '/var/log/pgbouncer/pgbouncer.log'
       $pidfile                 = '/var/run/pgbouncer/pgbouncer.pid'
       $confdir                 = '/etc/pgbouncer'
-      $conffile                = "$confdir/pgbouncer.ini"
-      $userlist_file           = "$confdir/userlist.txt"
+      $conffile                = "${confdir}/pgbouncer.ini"
+      $userlist_file           = "${confdir}/userlist.txt"
       $unix_socket_dir         = '/tmp'
-      $pgbouncer_package_name  = pick($pgbouncer_package_name,'pgbouncer')
     }
-
     'Debian': {
       $logfile                 = '/var/log/postgresql/pgbouncer.log'
       $pidfile                 = '/var/run/postgresql/pgbouncer.pid'
       $confdir                 = '/etc/pgbouncer'
-      $conffile                = "$confdir/pgbouncer.ini"
-      $userlist_file           = "$confdir/userlist.txt"
+      $conffile                = "${confdir}/pgbouncer.ini"
+      $userlist_file           = "${confdir}/userlist.txt"
       $unix_socket_dir         = '/var/run/postgresql'
-      $pgbouncer_package_name  = pick($pgbouncer_package_name,'pgbouncer')
       $deb_default_file        = '/etc/default/pgbouncer'
     }
-
-  } 
-
+    default: {
+      fail("Module ${module_name} is not supported on ${::operatingsystem}")
+    }
+  }
   # === Setup default parameters === #
   $default_config_params      = {
     logfile                     => $logfile,
@@ -53,5 +52,4 @@ class pgbouncer::params {
     max_client_conn             => '1000',
     default_pool_size           => '20',
   }
-
 }

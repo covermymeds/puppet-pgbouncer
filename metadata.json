@@ -1,8 +1,8 @@
 {
   "name": "covermymeds-pgbouncer",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "author": "CJ Estel",
-  "license": "MIT",
+  "license": "GPL-3.0+",
   "summary": "Deploys pgbouncer",
   "source": "https://github.com/covermymeds/puppet-pgbouncer.git",
   "project_page": "https://github.com/covermymeds/puppet-pgbouncer",

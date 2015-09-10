@@ -1,3 +1,18 @@
+## 2015-09-08 Release 0.2.5
+### Summary
+License change and bug-fix
+
+### Changes
+ - Fixed errors and warnings from puppet-lint
+ - Changed license to GPL-3.0+ to reflect initial source
+
+## 2015-09-03 Release 0.2.4
+### Summary
+Bug-fix release
+
+### Changes
+ - Changed version to match for release
+
 ## 2015-09-03 Release 0.2.3
 ### Summary
 Bug-fix release
