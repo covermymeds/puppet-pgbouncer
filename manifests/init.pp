@@ -140,7 +140,7 @@ class pgbouncer (
   }
   # check if we have an authlist 
   if $userlist {
-    pgbouncer::userlist{ 'pgbouncer_module_userlist':
+    pgbouncer::authlist{ 'pgbouncer_module_userlist':
       auth_list => $userlist,
     }
   }
