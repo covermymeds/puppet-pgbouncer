@@ -46,7 +46,7 @@ Array entry format in hieradata:
       auth_user: 'admin'
 ```
 
-#####`auth_list`
+#####`userlist`
 An array of hash values (user/password pairs).
 This array is written to /var/lib/postgresql/pgbouncer.auth
 

@@ -1,6 +1,6 @@
 {
   "name": "covermymeds-pgbouncer",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "author": "CJ Estel",
   "license": "GPL-3.0+",
   "summary": "Deploys pgbouncer",

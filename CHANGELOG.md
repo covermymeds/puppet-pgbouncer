@@ -1,4 +1,11 @@
-## 2015-09-010 Release 0.2.6
+## 2015-09-11 Release 0.2.7
+### Summary
+Issue with a puppet lint error on forge
+
+### Changes
+ - Changed userlist defined type to authlist to avoid name collision
+
+## 2015-09-10 Release 0.2.6
 ### Summary
 Issue with a puppet lint error on forge
 
