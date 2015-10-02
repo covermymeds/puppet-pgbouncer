@@ -118,7 +118,10 @@ class pgbouncer (
         ensure  => installed,
       }
     }
-
+    default: {
+      fail("Module ${module_name} is not supported on ${::operatingsystem}")
+    }
+  }
   # verify we have config file managed by concat
   concat { $conffile:
     ensure => present,
