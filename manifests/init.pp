@@ -102,7 +102,6 @@ class pgbouncer (
   anchor{'pgbouncer::begin':}
 
   # Same package name for both redhat based and debian based
- 
   case $::osfamily {
     'RedHat', 'Linux', 'Debian': {
       package{ $pgbouncer_package_name:
