@@ -35,6 +35,15 @@
         "12.04",
         "14.04"
       ]
+    },
+    {
+      "operatingsystem": "FreeBSD",
+      "operatingsystemrelease": [
+        "10.2",
+        "10.1",
+        "10.0",
+        "9.3"
+      ]
     }
   ],
   "dependencies": [
