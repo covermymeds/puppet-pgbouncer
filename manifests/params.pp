@@ -30,6 +30,14 @@ class pgbouncer::params {
       $unix_socket_dir         = '/var/run/postgresql'
       $deb_default_file        = '/etc/default/pgbouncer'
     }
+    'FreeBSD': {
+      $logfile                 = '/var/log/pgbouncer/pgbouncer.log'
+      $pidfile                 = '/var/run/pgbouncer/pgbouncer.pid'
+      $confdir                 = '/usr/local/etc'
+      $conffile                = "${confdir}/pgbouncer.ini"
+      $userlist_file           = "${confdir}/pgbouncer.users"
+      $unix_socket_dir         = '/tmp'
+    }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")
     }

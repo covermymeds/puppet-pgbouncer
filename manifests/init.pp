@@ -102,15 +102,26 @@ class pgbouncer (
   anchor{'pgbouncer::begin':}
 
   # Same package name for both redhat based and debian based
-  package{ $pgbouncer_package_name:
-    ensure  => installed,
-    require => [
-      Class[
-        'postgresql::repo::yum_postgresql_org'],
-        Anchor['pgbouncer::begin']
-      ],
+  case $::osfamily {
+    'RedHat', 'Linux', 'Debian': {
+      package{ $pgbouncer_package_name:
+        ensure  => installed,
+        require => [
+          Class[
+            'postgresql::repo::yum_postgresql_org'],
+            Anchor['pgbouncer::begin']
+          ],
+      }
+    }
+    'FreeBSD': {
+      package{ $pgbouncer_package_name:
+        ensure  => installed,
+      }
+    }
+    default: {
+      fail("Module ${module_name} is not supported on ${::operatingsystem}")
+    }
   }
-
   # verify we have config file managed by concat
   concat { $conffile:
     ensure => present,
