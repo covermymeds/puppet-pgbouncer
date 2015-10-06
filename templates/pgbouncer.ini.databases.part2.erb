@@ -1,6 +1,6 @@
 ; Created from: <%= @name %>
 <% if @databases -%>
 <%  @databases.each do |entry| -%>
-<%=   %Q|#{entry['source_db']} = host=#{entry['host']} dbname=#{entry['dest_db']} user=#{entry['auth_user']} password=#{entry['auth_pass']}| %>
+<%=   %Q|#{entry['source_db']} = host=#{entry['host']} dbname=#{entry['dest_db']}| %><% if entry['auth_user'] %><%= %Q| user=#{entry['auth_user']}| %><% end %><% if entry['auth_pass'] %><%= %Q| password=#{entry['auth_pass']}| %><% end %><% if entry['pool_size'] %><%= %Q| password=#{entry['pool_size']}| %><% end %><% if entry['reserve_pool_size'] %><%= %Q| password=#{entry['reserve_pool_size']}| %><% end %>
 <%  end -%>
 <% end %>
