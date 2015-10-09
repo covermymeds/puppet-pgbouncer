@@ -29,7 +29,7 @@
 #
 # === License
 #
-# MIT License (MIT)
+# GPL-3.0+
 #
 # === Parameters 
 # 
@@ -103,7 +103,7 @@ class pgbouncer (
 
   # Same package name for both redhat based and debian based
   case $::osfamily {
-    'RedHat', 'Linux', 'Debian': {
+    'RedHat', 'Linux': {
       package{ $pgbouncer_package_name:
         ensure  => installed,
         require => [
@@ -113,7 +113,7 @@ class pgbouncer (
           ],
       }
     }
-    'FreeBSD': {
+    'FreeBSD', 'Debian': {
       package{ $pgbouncer_package_name:
         ensure  => installed,
       }
