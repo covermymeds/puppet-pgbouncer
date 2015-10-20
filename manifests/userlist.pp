@@ -16,7 +16,7 @@ define pgbouncer::userlist(
   }
 
   concat::fragment { "${paramtmpfile}_users":
-    target  => $::pgbouncer::conffile,  
+    target  => $::pgbouncer::conffile,
     content => template('pgbouncer/pgbouncer.ini.users.part.erb'),
     order   => '04',
   }
