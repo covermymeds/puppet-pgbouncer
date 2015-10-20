@@ -2,6 +2,6 @@
 [users]
 <% if @auth_list -%>
 <%  @auth_list.each do |entry| -%>
-<%    if entry['pool_mode'] %><%= %Q|"#{entry['user']}" = pool_mode="#entry['pool_mode']"| %><% end %>
+<%    if entry['pool_mode'] %><%= %Q|"#{entry['user']}" = pool_mode="#{entry['pool_mode']}"| %><% end %>
 <%  end -%>
 <% end %>
