@@ -1,4 +1,13 @@
-## 2015-09-010 Release 0.2.6
+## 2015-10-09 Release 0.2.7
+### Summary
+New OS Support and bugfix release
+
+### Changes
+ - Added FreeBSD OS support
+ - Corrected issue that would have debian based systems trying to use yum
+ - Corrected license definition in comments in init.pp
+
+## 2015-09-10 Release 0.2.6
 ### Summary
 Issue with a puppet lint error on forge
 
