@@ -4,6 +4,7 @@
 #
 define pgbouncer::userlist(
   $auth_list = [],
+  $paramtmpfile = '',
 ) {
 
   validate_array($auth_list)
@@ -14,9 +15,10 @@ define pgbouncer::userlist(
     order   => '01',
   }
 
-  concat::fragment { "ini - $auth_list[0]['user']":
-    target  => $::pgbouncer::conffile,
+  concat::fragment { "${paramtmpfile}_users":
+    target  => $::pgbouncer::conffile,  
     content => template('pgbouncer/pgbouncer.ini.users.part.erb'),
     order   => '04',
   }
+
 }
