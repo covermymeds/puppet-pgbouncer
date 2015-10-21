@@ -53,7 +53,7 @@ class pgbouncer::params {
     admin_users                 => 'postgres',
     stats_users                 => 'postgres',
     auth_type                   => 'trust',
-    pool_mode                   => 'transaction',
+    pool_mode                   => 'session',
     server_reset_query          => 'DISCARD ALL',
     server_check_query          => 'select 1',
     server_check_delay          => '30',
