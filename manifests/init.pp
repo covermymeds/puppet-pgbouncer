@@ -153,6 +153,7 @@ class pgbouncer (
   if $userlist {
     pgbouncer::userlist{ 'pgbouncer_module_userlist':
       auth_list => $userlist,
+      paramtmpfile => $paramtmpfile,
     }
   }
 
