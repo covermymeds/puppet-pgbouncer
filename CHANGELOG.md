@@ -1,3 +1,10 @@
+## 2015-10-09 Release 0.3.1
+### Summary
+Re-packaged without temporary files
+
+### Changes
+  - No code changes made. The package file picked up temporary editor files and these are removed in the new package.
+
 ## 2015-10-09 Release 0.3.0
 ### Summary
 Better support for 1.7 release, possible impacting changes included!
