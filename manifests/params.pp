@@ -6,7 +6,6 @@ class pgbouncer::params {
   
   $userlist                   = []
   $databases                  = []
-  $dbtmpfile                  = '/tmp/pgbouncer-dbtmpfile'
   $paramtmpfile               = '/tmp/pgbouncer-paramtmpfile'
   $config_params              = undef
   $pgbouncer_package_name     = 'pgbouncer'
