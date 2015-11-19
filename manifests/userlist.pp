@@ -15,10 +15,10 @@ define pgbouncer::userlist(
     order   => '01',
   }
 
-  concat::fragment { "${paramtmpfile}_users":
+  concat::fragment { "${auth_list[0]}_users":
     target  => $::pgbouncer::conffile,
-    content => template('pgbouncer/pgbouncer.ini.users.part.erb'),
-    order   => '04',
+    content => template('pgbouncer/pgbouncer.ini.users.part2.erb'),
+    order   => '06',
   }
 
 }

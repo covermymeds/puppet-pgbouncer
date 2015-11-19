@@ -52,9 +52,6 @@
 #     dest_db: postgres
 #     auth_user: postgres
 # 
-# dbtmpfile is the temporary file the module uses to stitch together pieces
-# using puppet concat.  It's located in the tmp directory by default
-#
 # paramtmpfile is the temporary file the module uses to stitch together pieces
 # using puppet concat. Its located in the tmp directory by default.
 #
@@ -86,7 +83,6 @@
 class pgbouncer (
   $userlist                   = $pgbouncer::params::userlist,
   $databases                  = $pgbouncer::params::databases,
-  $dbtmpfile                  = $pgbouncer::params::dbtmpfile,
   $paramtmpfile               = $pgbouncer::params::paramtmpfile,
   $default_config_params      = $pgbouncer::params::default_config_params,
   $config_params              = $pgbouncer::params::config_params,
@@ -133,7 +129,7 @@ class pgbouncer (
   }
   
   # build the pgbouncer parameter piece of the config file
-  concat::fragment { $paramtmpfile:
+  concat::fragment { "${paramtmpfile}_params":
     target  => $conffile,
     content => template('pgbouncer/pgbouncer.ini.param.part.erb'),
     order   => '03',
@@ -158,10 +154,17 @@ class pgbouncer (
   }
 
   #build the databases base piece of the config file
-  concat::fragment { $dbtmpfile:
+  concat::fragment { "${paramtmpfile}_database":
     target  => $conffile,
     content => template('pgbouncer/pgbouncer.ini.databases.part1.erb'),
     order   => '01',
+  }
+
+  #build the users base piece of the config file
+  concat::fragment { "${paramtmpfile}_users":
+    target  => $conffile,
+    content => template('pgbouncer/pgbouncer.ini.users.part1.erb'),
+    order   => '05',
   }
   
   # check if we have a database list and create entries

@@ -1,3 +1,28 @@
+## 2015-10-09 Release 0.3.0
+### Summary
+Better support for 1.7 release, possible impacting changes included!
+
+### Changes
+  - Changed default of global pooler to conservative value of session instead of the more aggressive transaction value. Though this is not a breaking change, it can affect performance greatly. To preserve the old behavior, please set overide the config params. Keep in mind this is a deep merge of the config_params variable with the defaults. Example hieradata below:
+
+    ```
+    pgbouncer::config_params
+        pool_mode: 'transaction'
+    ```
+    Alternatively you can override the pool mode at the user level in 1.7 with the below syntax in your user array:
+
+    ```
+    pgbouncer::userlist:
+      - user: 'username'
+        password: 'password'
+        pool_mode: 'transaction'
+    ```
+  - Optional arguments are added to the pgbouncer.ini databases section for port
+  - Optional arguments are added to the pgbouncer.ini databases section for auth_user
+  - Optional arguments are added to the pgbouncer.ini databases section for auth_pass
+  - Optional arguments are added to the pgbouncer.ini databases section for pool_size
+  - A users section has been added to the pgbouncer.ini 
+
 ## 2015-10-09 Release 0.2.7
 ### Summary
 New OS Support and bugfix release
