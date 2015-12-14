@@ -1,3 +1,10 @@
+## 2015-10-09 Release 0.3.2
+### Summary
+Remove PaxHeader files from release tarball
+
+### Changes
+  - Rebuild release package with gnu-tar to remove PaxHeader files
+
 ## 2015-10-09 Release 0.3.1
 ### Summary
 Re-packaged without temporary files
