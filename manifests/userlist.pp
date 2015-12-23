@@ -15,7 +15,7 @@ define pgbouncer::userlist(
     order   => '01',
   }
 
-  concat::fragment { "${auth_list[0]}_users":
+  concat::fragment { "${auth_list[0]['user']}_users":
     target  => $::pgbouncer::conffile,
     content => template('pgbouncer/pgbouncer.ini.users.part2.erb'),
     order   => '06',
