@@ -90,6 +90,7 @@ class pgbouncer (
   $conffile                   = $pgbouncer::params::conffile,
   $userlist_file              = $pgbouncer::params::userlist_file,
   $deb_default_file           = $pgbouncer::params::deb_default_file,
+  $service_start_with_system  = $pgbouncer::params::service_start_with_system,
 ) inherits pgbouncer::params {
 
   # merge the defaults and custom params
@@ -174,8 +175,11 @@ class pgbouncer (
     }
   }
 
+  validate_bool($service_start_with_system)
+
   service {'pgbouncer':
     ensure    => running,
+    enable    => $service_start_with_system,
     subscribe => File[$userlist_file, $conffile],
   }
   
