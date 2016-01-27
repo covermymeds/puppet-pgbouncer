@@ -10,6 +10,7 @@ class pgbouncer::params {
   $config_params              = undef
   $pgbouncer_package_name     = 'pgbouncer'
   $service_start_with_system  = true
+  $require_repo               = true
 
   # === Set OS specific variables === #
   case $::osfamily {

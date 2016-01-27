@@ -91,6 +91,7 @@ class pgbouncer (
   $userlist_file              = $pgbouncer::params::userlist_file,
   $deb_default_file           = $pgbouncer::params::deb_default_file,
   $service_start_with_system  = $pgbouncer::params::service_start_with_system,
+  $require_repo               = $pgbouncer::params::require_repo,
 ) inherits pgbouncer::params {
 
   # merge the defaults and custom params
@@ -101,13 +102,13 @@ class pgbouncer (
   # Same package name for both redhat based and debian based
   case $::osfamily {
     'RedHat', 'Linux': {
+      $package_require = $require_repo ? {
+        true  => [ Class['postgresql::repo::yum_postgresql_org'], Anchor['pgbouncer::begin'] ],
+        false => Anchor['pgbouncer::begin'],
+      }
       package{ $pgbouncer_package_name:
         ensure  => installed,
-        require => [
-          Class[
-            'postgresql::repo::yum_postgresql_org'],
-            Anchor['pgbouncer::begin']
-          ],
+        require => $package_require,
       }
     }
     'FreeBSD', 'Debian': {
