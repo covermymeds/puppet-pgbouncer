@@ -91,6 +91,8 @@ class pgbouncer (
   $userlist_file              = $pgbouncer::params::userlist_file,
   $deb_default_file           = $pgbouncer::params::deb_default_file,
   $service_start_with_system  = $pgbouncer::params::service_start_with_system,
+  $user                       = $pgbouncer::params::user,
+  $group                      = $pgbouncer::params::group,
 ) inherits pgbouncer::params {
 
   # merge the defaults and custom params
@@ -122,11 +124,17 @@ class pgbouncer (
   # verify we have config file managed by concat
   concat { $conffile:
     ensure => present,
+    owner  => $user,
+    group  => $group,
+    mode   => '0640',
   }
 
   # verify we have auth_file managed by concat
   concat { $userlist_file:
     ensure => present,
+    owner  => $user,
+    group  => $group,
+    mode   => '0640',
   }
   
   # build the pgbouncer parameter piece of the config file

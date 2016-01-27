@@ -20,6 +20,8 @@ class pgbouncer::params {
       $conffile                = "${confdir}/pgbouncer.ini"
       $userlist_file           = "${confdir}/userlist.txt"
       $unix_socket_dir         = '/tmp'
+      $user                    = 'pgbouncer'
+      $group                   = 'pgbouncer'
     }
     'Debian': {
       $logfile                 = '/var/log/postgresql/pgbouncer.log'
@@ -29,6 +31,8 @@ class pgbouncer::params {
       $userlist_file           = "${confdir}/userlist.txt"
       $unix_socket_dir         = '/var/run/postgresql'
       $deb_default_file        = '/etc/default/pgbouncer'
+      $user                    = 'pgbouncer'
+      $group                   = 'pgbouncer'
     }
     'FreeBSD': {
       $logfile                 = '/var/log/pgbouncer/pgbouncer.log'
@@ -37,6 +41,8 @@ class pgbouncer::params {
       $conffile                = "${confdir}/pgbouncer.ini"
       $userlist_file           = "${confdir}/pgbouncer.users"
       $unix_socket_dir         = '/tmp'
+      $user                    = 'pgbouncer'
+      $group                   = 'pgbouncer'
     }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")
