@@ -3,7 +3,7 @@
 # Private class included by pgbouncer to set parameters
 #
 class pgbouncer::params {
-  
+
   $userlist                   = []
   $databases                  = []
   $paramtmpfile               = '/tmp/pgbouncer-paramtmpfile'
@@ -12,6 +12,7 @@ class pgbouncer::params {
   $service_start_with_system  = true
   $user                       = 'pgbouncer'
   $group                      = 'pgbouncer'
+  $require_repo               = true
 
   # === Set OS specific variables === #
   case $::osfamily {

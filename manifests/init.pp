@@ -20,7 +20,7 @@
 #
 # === Credits
 #
-# This module is loosely based on 
+# This module is loosely based on
 # https://bitbucket.org/landcareresearch/puppet-pgbouncer
 #
 # === Copyright
@@ -31,17 +31,17 @@
 #
 # GPL-3.0+
 #
-# === Parameters 
-# 
-# userlist is an empty array by default. You can create an array in hieradata 
-# like the example below or you can call the resource directly from a third 
-# party module 
-# pgbouncer::userlist: 
+# === Parameters
+#
+# userlist is an empty array by default. You can create an array in hieradata
+# like the example below or you can call the resource directly from a third
+# party module
+# pgbouncer::userlist:
 #   - user: <user>
-#     password: <password> 
+#     password: <password>
 #   - user: <user2>
-#     password: <password2> 
-# 
+#     password: <password2>
+#
 # databases is an empty array by default. You can create an array in hieradata
 # like the example below or you can call the resource direclty from a third
 # party module Set hieradata hash array for "pgbouncer::databases" to set values
@@ -51,7 +51,7 @@
 #     host: localhost
 #     dest_db: postgres
 #     auth_user: postgres
-# 
+#
 # paramtmpfile is the temporary file the module uses to stitch together pieces
 # using puppet concat. Its located in the tmp directory by default.
 #
@@ -70,8 +70,8 @@
 #   dns_max_ttl: 16
 #
 # pgbouncer_package_name is the name of the package that should be installed. By
-# default, this should be picked by the OS, but you can specify a name here if 
-# you'd like to override the package name. You could possibly use this to 
+# default, this should be picked by the OS, but you can specify a name here if
+# you'd like to override the package name. You could possibly use this to
 # specify an older version as well.
 #
 # conffile is the name of the configuration file
@@ -93,6 +93,7 @@ class pgbouncer (
   $service_start_with_system  = $pgbouncer::params::service_start_with_system,
   $user                       = $pgbouncer::params::user,
   $group                      = $pgbouncer::params::group,
+  $require_repo               = $pgbouncer::params::require_repo,
 ) inherits pgbouncer::params {
 
   # merge the defaults and custom params
@@ -103,13 +104,13 @@ class pgbouncer (
   # Same package name for both redhat based and debian based
   case $::osfamily {
     'RedHat', 'Linux': {
+      $package_require = $require_repo ? {
+        true  => [ Class['postgresql::repo::yum_postgresql_org'], Anchor['pgbouncer::begin'] ],
+        false => Anchor['pgbouncer::begin'],
+      }
       package{ $pgbouncer_package_name:
         ensure  => installed,
-        require => [
-          Class[
-            'postgresql::repo::yum_postgresql_org'],
-            Anchor['pgbouncer::begin']
-          ],
+        require => $package_require,
       }
     }
     'FreeBSD', 'Debian': {
@@ -136,7 +137,7 @@ class pgbouncer (
     group  => $group,
     mode   => '0640',
   }
-  
+
   # build the pgbouncer parameter piece of the config file
   concat::fragment { "${paramtmpfile}_params":
     target  => $conffile,
@@ -154,7 +155,7 @@ class pgbouncer (
       before  => Concat[$userlist_file],
     }
   }
-  # check if we have an authlist 
+  # check if we have an authlist
   if $userlist {
     pgbouncer::userlist{ 'pgbouncer_module_userlist':
       auth_list => $userlist,
@@ -175,7 +176,7 @@ class pgbouncer (
     content => template('pgbouncer/pgbouncer.ini.users.part1.erb'),
     order   => '05',
   }
-  
+
   # check if we have a database list and create entries
   if $databases {
     pgbouncer::databases{ 'pgbouncer_module_databases':
@@ -190,7 +191,7 @@ class pgbouncer (
     enable    => $service_start_with_system,
     subscribe => Concat[$userlist_file, $conffile],
   }
-  
+
   anchor{'pgbouncer::end':
     require => Service['pgbouncer'],
   }
