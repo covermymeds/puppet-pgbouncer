@@ -143,7 +143,7 @@ class pgbouncer (
       ensure  => file,
       source  => 'puppet:///modules/pgbouncer/pgbouncer',
       require => Package[$pgbouncer_package_name],
-      before  => File[$userlist_file],
+      before  => Concat[$userlist_file],
     }
   }
   # check if we have an authlist 
@@ -180,7 +180,7 @@ class pgbouncer (
   service {'pgbouncer':
     ensure    => running,
     enable    => $service_start_with_system,
-    subscribe => File[$userlist_file, $conffile],
+    subscribe => Concat[$userlist_file, $conffile],
   }
   
   anchor{'pgbouncer::end':
