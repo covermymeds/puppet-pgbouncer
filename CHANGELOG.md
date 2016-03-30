@@ -1,3 +1,14 @@
+## 2016-03-30 Release 0.3.3
+### Summary
+Bug fixes, minor feature changes
+
+### Changes
+  - Ensure userlist is owned by the pgbouncer user and not world readable (dgarbus)
+  - Make requirement of puppetlabs-postgresql repo management optional (dgarbus)
+  - Allow for fallback database configuration by removing the requirement of dest_db (dgarbus)
+  - Move pgbouncer user/group variables to be global (dgarbus)
+  - fix for module concat 2.x (madeddie)
+
 ## 2015-10-09 Release 0.3.2
 ### Summary
 Remove PaxHeader files from release tarball
