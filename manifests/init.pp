@@ -91,6 +91,7 @@ class pgbouncer (
   $userlist_file              = $pgbouncer::params::userlist_file,
   $deb_default_file           = $pgbouncer::params::deb_default_file,
   $service_start_with_system  = $pgbouncer::params::service_start_with_system,
+  $service_hasrestart         = $pgbouncer::params::service_hasrestart,
   $user                       = $pgbouncer::params::user,
   $group                      = $pgbouncer::params::group,
   $require_repo               = $pgbouncer::params::require_repo,
@@ -187,9 +188,10 @@ class pgbouncer (
   validate_bool($service_start_with_system)
 
   service {'pgbouncer':
-    ensure    => running,
-    enable    => $service_start_with_system,
-    subscribe => Concat[$userlist_file, $conffile],
+    ensure     => running,
+    enable     => $service_start_with_system,
+    hasrestart => $service_hasrestart,
+    subscribe  => Concat[$userlist_file, $conffile],
   }
 
   anchor{'pgbouncer::end':
