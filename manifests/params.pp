@@ -23,6 +23,7 @@ class pgbouncer::params {
       $conffile                = "${confdir}/pgbouncer.ini"
       $userlist_file           = "${confdir}/userlist.txt"
       $unix_socket_dir         = '/tmp'
+      $deb_default_file        = undef
     }
     'Debian': {
       $logfile                 = '/var/log/postgresql/pgbouncer.log'
@@ -40,6 +41,7 @@ class pgbouncer::params {
       $conffile                = "${confdir}/pgbouncer.ini"
       $userlist_file           = "${confdir}/pgbouncer.users"
       $unix_socket_dir         = '/tmp'
+      $deb_default_file        = undef
     }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")

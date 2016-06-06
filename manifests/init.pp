@@ -147,7 +147,7 @@ class pgbouncer (
   }
 
   # check if debian
-  if $::osfamily == 'Debian' {
+  if $::osfamily == 'Debian' and $deb_default_file {
     file{ $deb_default_file:
       ensure  => file,
       source  => 'puppet:///modules/pgbouncer/pgbouncer',
