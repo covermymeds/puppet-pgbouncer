@@ -109,14 +109,13 @@ class pgbouncer (
         false => Anchor['pgbouncer::begin'],
       }
       package{ $pgbouncer_package_name:
-        ensure => installed,
-        before => $package_require,
+        ensure  => installed,
+        require => $package_require,
       }
     }
     'FreeBSD', 'Debian': {
       package{ $pgbouncer_package_name:
         ensure => installed,
-        before => Anchor['pgbouncer::begin'],
       }
     }
     default: {
@@ -129,7 +128,7 @@ class pgbouncer (
     owner   => $user,
     group   => $group,
     mode    => '0640',
-    require => Anchor['pgbouncer::begin'],
+    require => Package[$pgbouncer_package_name],
   }
 
   # verify we have auth_file managed by concat
@@ -138,7 +137,7 @@ class pgbouncer (
     owner   => $user,
     group   => $group,
     mode    => '0640',
-    require => Anchor['pgbouncer::begin'],
+    require => Package[$pgbouncer_package_name],
   }
 
   # build the pgbouncer parameter piece of the config file
