@@ -156,7 +156,7 @@ class pgbouncer (
     }
   }
   # check if we have an authlist
-  if $userlist {
+  if ! empty($userlist) {
     pgbouncer::userlist{ 'pgbouncer_module_userlist':
       auth_list => $userlist,
       paramtmpfile => $paramtmpfile,
@@ -178,7 +178,7 @@ class pgbouncer (
   }
 
   # check if we have a database list and create entries
-  if $databases {
+  if ! empty($databases) {
     pgbouncer::databases{ 'pgbouncer_module_databases':
       databases => $databases,
     }
