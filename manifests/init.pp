@@ -94,6 +94,8 @@ class pgbouncer (
   $user                       = $pgbouncer::params::user,
   $group                      = $pgbouncer::params::group,
   $require_repo               = $pgbouncer::params::require_repo,
+  $userlist_from_mkauth       = $pgbouncer::params::userlist_from_mkauth,
+  $mkauth                     = $pgbouncer::params::mkauth,
 ) inherits pgbouncer::params {
 
   # merge the defaults and custom params
@@ -158,8 +160,38 @@ class pgbouncer (
   # check if we have an authlist
   if ! empty($userlist) {
     pgbouncer::userlist{ 'pgbouncer_module_userlist':
-      auth_list => $userlist,
+      auth_list    => $userlist,
       paramtmpfile => $paramtmpfile,
+    }
+  }
+
+  if $userlist_from_mkauth {
+    file { $::pgbouncer::confdir:
+      ensure => directory,
+      mode   => '0770',
+      owner  => $::pgbouncer::user,
+      group  => $::pgbouncer::postgres_user,
+    } ->
+    file { $::pgbouncer::mkauth:
+      ensure => present,
+      mode   => '0755',
+      owner  => 'root',
+    } ->
+    exec { 'pgbouncer_mkauth':
+      command  => "${::pgbouncer::mkauth} ${::pgbouncer::userlist_file}.mkauth.tmp dbname=postgres",
+      user     => $::pgbouncer::postgres_user,
+      # The Exec still registers as a change, it is logged as 'info' instead of 'notice'
+      loglevel => 'info',
+    } ->
+    file { "${::pgbouncer::userlist_file}.mkauth.tmp":
+      ensure => present,
+      mode   => '0600',
+      owner  => $::pgbouncer::postgres_user,
+    } ->
+    concat::fragment { 'pgbouncer_mkauth_tmpfile':
+      target => $::pgbouncer::userlist_file,
+      source => "${::pgbouncer::userlist_file}.mkauth.tmp",
+      order  => '02',
     }
   }
 
