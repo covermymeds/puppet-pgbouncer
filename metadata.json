@@ -4,7 +4,7 @@
   "author": "CJ Estel",
   "license": "GPL-3.0+",
   "summary": "Deploys pgbouncer",
-  "source": "https://github.com/covermymeds/puppet-pgbouncer.git",
+  "source": "https://github.com/covermymeds/puppet-pgbouncer",
   "project_page": "https://github.com/covermymeds/puppet-pgbouncer",
   "issues_url": "https://github.com/covermymeds/puppet-pgbouncer/issues",
   "tags": [
