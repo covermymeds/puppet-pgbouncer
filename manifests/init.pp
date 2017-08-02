@@ -96,6 +96,7 @@ class pgbouncer (
   $require_repo               = $pgbouncer::params::require_repo,
   $userlist_from_mkauth       = $pgbouncer::params::userlist_from_mkauth,
   $mkauth                     = $pgbouncer::params::mkauth,
+  $online_reload              = $pgbouncer::params::online_reload,
 ) inherits pgbouncer::params {
 
   # merge the defaults and custom params
@@ -218,10 +219,18 @@ class pgbouncer (
 
   validate_bool($service_start_with_system)
 
-  service {'pgbouncer':
-    ensure    => running,
-    enable    => $service_start_with_system,
-    subscribe => Concat[$userlist_file, $conffile],
+  # gracefully reload the service online if desired,
+  # useful as puppet doesn't support reloading services - see https://tickets.puppetlabs.com/browse/PUP-1054
+  $reload_command = $online_reload ? {
+    true  => 'service pgbouncer reload',
+    false => undef,
+  }
+
+  service { 'pgbouncer':
+    ensure         => running,
+    enable         => $service_start_with_system,
+    restart        => $reload_command,
+    subscribe      => Concat[$userlist_file, $conffile],
   }
 
   anchor{'pgbouncer::end':

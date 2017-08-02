@@ -69,5 +69,6 @@ class pgbouncer::params {
     server_check_delay          => '30',
     max_client_conn             => '1000',
     default_pool_size           => '20',
+    online_reload               => false,
   }
 }
