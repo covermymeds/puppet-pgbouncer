@@ -15,6 +15,8 @@ class pgbouncer::params {
   $require_repo               = true
   $userlist_from_mkauth       = false
   $postgres_user              = 'postgres'
+  $online_reload              = false
+
 
   # === Set OS specific variables === #
   case $::osfamily {
