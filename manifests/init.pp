@@ -182,7 +182,8 @@ class pgbouncer (
       command  => "${::pgbouncer::mkauth} ${::pgbouncer::userlist_file}.mkauth.tmp dbname=postgres",
       user     => $::pgbouncer::postgres_user,
       # The Exec still registers as a change, it is logged as 'info' instead of 'notice'
-      loglevel => 'info',
+      loglevel    => 'info',
+      refreshonly => true,
     } ->
     file { "${::pgbouncer::userlist_file}.mkauth.tmp":
       ensure => present,
