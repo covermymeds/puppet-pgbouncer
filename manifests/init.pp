@@ -179,20 +179,18 @@ class pgbouncer (
       owner  => 'root',
     } ->
     exec { 'pgbouncer_mkauth':
-      command  => "${::pgbouncer::mkauth} ${::pgbouncer::userlist_file}.mkauth.tmp dbname=postgres",
-      user     => $::pgbouncer::postgres_user,
-      # The Exec still registers as a change, it is logged as 'info' instead of 'notice'
-      loglevel    => 'info',
-      refreshonly => true,
+      command => "${::pgbouncer::mkauth} ${::pgbouncer::userlist_file}.mkauth dbname=postgres",
+      user    => $::pgbouncer::postgres_user,
+      unless  => "${::pgbouncer::mkauth} ${::pgbouncer::userlist_file}.mkauth.tmp dbname=postgres ; /usr/bin/diff -q ${::pgbouncer::userlist_file}.mkauth ${::pgbouncer::userlist_file}.mkauth.tmp",
     } ->
-    file { "${::pgbouncer::userlist_file}.mkauth.tmp":
+    file { "${::pgbouncer::userlist_file}.mkauth":
       ensure => present,
       mode   => '0600',
       owner  => $::pgbouncer::postgres_user,
     } ->
     concat::fragment { 'pgbouncer_mkauth_tmpfile':
       target => $::pgbouncer::userlist_file,
-      source => "${::pgbouncer::userlist_file}.mkauth.tmp",
+      source => "${::pgbouncer::userlist_file}.mkauth",
       order  => '02',
     }
   }
