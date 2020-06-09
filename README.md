@@ -58,6 +58,10 @@ Array entry format in hieradata:
       password: 'admin'
 ```
 
+#####`userlist_from_mkauth`
+
+A boolean which, when true, will append the output from mkauth.py to the userlist
+
 ## Limitations
 
 This has only been tested on Redhat Systems. If you experience issues using it with Ubuntu, please open an issue and we will work with you to correct the problem or you can submit a PR.

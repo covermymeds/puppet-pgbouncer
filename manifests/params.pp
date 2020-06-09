@@ -13,6 +13,10 @@ class pgbouncer::params {
   $user                       = 'pgbouncer'
   $group                      = 'pgbouncer'
   $require_repo               = true
+  $userlist_from_mkauth       = false
+  $postgres_user              = 'postgres'
+  $online_reload              = false
+
 
   # === Set OS specific variables === #
   case $::osfamily {
@@ -23,6 +27,8 @@ class pgbouncer::params {
       $conffile                = "${confdir}/pgbouncer.ini"
       $userlist_file           = "${confdir}/userlist.txt"
       $unix_socket_dir         = '/tmp'
+      $deb_default_file        = undef
+      $mkauth                  = '/etc/pgbouncer/mkauth.py'
     }
     'Debian': {
       $logfile                 = '/var/log/postgresql/pgbouncer.log'
@@ -32,6 +38,7 @@ class pgbouncer::params {
       $userlist_file           = "${confdir}/userlist.txt"
       $unix_socket_dir         = '/var/run/postgresql'
       $deb_default_file        = '/etc/default/pgbouncer'
+      $mkauth                  = '/usr/share/pgbouncer/mkauth.py'
     }
     'FreeBSD': {
       $logfile                 = '/var/log/pgbouncer/pgbouncer.log'
@@ -40,6 +47,8 @@ class pgbouncer::params {
       $conffile                = "${confdir}/pgbouncer.ini"
       $userlist_file           = "${confdir}/pgbouncer.users"
       $unix_socket_dir         = '/tmp'
+      $deb_default_file        = undef
+      $mkauth                  = '/usr/local/etc/pgbouncer/mkauth.py'
     }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")

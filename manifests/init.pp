@@ -94,6 +94,9 @@ class pgbouncer (
   $user                       = $pgbouncer::params::user,
   $group                      = $pgbouncer::params::group,
   $require_repo               = $pgbouncer::params::require_repo,
+  $userlist_from_mkauth       = $pgbouncer::params::userlist_from_mkauth,
+  $mkauth                     = $pgbouncer::params::mkauth,
+  $online_reload              = $pgbouncer::params::online_reload,
 ) inherits pgbouncer::params {
 
   # merge the defaults and custom params
@@ -156,10 +159,39 @@ class pgbouncer (
     }
   }
   # check if we have an authlist
-  if $userlist {
+  if ! empty($userlist) {
     pgbouncer::userlist{ 'pgbouncer_module_userlist':
-      auth_list => $userlist,
+      auth_list    => $userlist,
       paramtmpfile => $paramtmpfile,
+    }
+  }
+
+  if $userlist_from_mkauth {
+    file { $::pgbouncer::confdir:
+      ensure => directory,
+      mode   => '0770',
+      owner  => $::pgbouncer::user,
+      group  => $::pgbouncer::postgres_user,
+    } ->
+    file { $::pgbouncer::mkauth:
+      ensure => present,
+      mode   => '0755',
+      owner  => 'root',
+    } ->
+    exec { 'pgbouncer_mkauth':
+      command => "${::pgbouncer::mkauth} ${::pgbouncer::userlist_file}.mkauth dbname=postgres",
+      user    => $::pgbouncer::postgres_user,
+      unless  => "${::pgbouncer::mkauth} ${::pgbouncer::userlist_file}.mkauth.tmp dbname=postgres ; /usr/bin/diff -q ${::pgbouncer::userlist_file}.mkauth ${::pgbouncer::userlist_file}.mkauth.tmp",
+    } ->
+    file { "${::pgbouncer::userlist_file}.mkauth":
+      ensure => present,
+      mode   => '0600',
+      owner  => $::pgbouncer::postgres_user,
+    } ->
+    concat::fragment { 'pgbouncer_mkauth_tmpfile':
+      target => $::pgbouncer::userlist_file,
+      source => "${::pgbouncer::userlist_file}.mkauth",
+      order  => '02',
     }
   }
 
@@ -178,7 +210,7 @@ class pgbouncer (
   }
 
   # check if we have a database list and create entries
-  if $databases {
+  if ! empty($databases) {
     pgbouncer::databases{ 'pgbouncer_module_databases':
       databases => $databases,
     }
@@ -186,10 +218,18 @@ class pgbouncer (
 
   validate_bool($service_start_with_system)
 
-  service {'pgbouncer':
-    ensure    => running,
-    enable    => $service_start_with_system,
-    subscribe => Concat[$userlist_file, $conffile],
+  # gracefully reload the service online if desired,
+  # useful as puppet doesn't support reloading services - see https://tickets.puppetlabs.com/browse/PUP-1054
+  $reload_command = $online_reload ? {
+    true  => 'service pgbouncer reload',
+    false => undef,
+  }
+
+  service { 'pgbouncer':
+    ensure         => running,
+    enable         => $service_start_with_system,
+    restart        => $reload_command,
+    subscribe      => Concat[$userlist_file, $conffile],
   }
 
   anchor{'pgbouncer::end':
